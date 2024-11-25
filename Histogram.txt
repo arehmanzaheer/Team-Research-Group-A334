@@ -1,0 +1,14 @@
+
+library(readxl)
+library(ggplot2)
+
+
+oil_data <- read_excel('DP_LIVE_02012022050459635.xlsx')
+
+
+ggplot(oil_data, aes(x = Value)) +
+  geom_histogram(binwidth = 50000, fill = "blue", color = "black") +
+  labs(title = "Distribution of Oil Production",
+       x = "Oil Production (KTOE)",
+       y = "Frequency") +
+  theme_minimal()
