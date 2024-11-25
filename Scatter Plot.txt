@@ -1,0 +1,14 @@
+
+library(readxl)
+library(ggplot2)
+
+
+oil_data <- read_excel('DP_LIVE_02012022050459635.xlsx')
+
+
+ggplot(oil_data, aes(x = TIME, y = Value)) +
+  geom_point(color = "blue") +
+  labs(title = "Oil Production Over Time",
+       x = "Year",
+       y = "Oil Production (KTOE)") +
+  theme_minimal()
