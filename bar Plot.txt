@@ -1,0 +1,31 @@
+
+library(readxl)
+library(dplyr)
+library(ggplot2)
+
+oil_data <- read_excel('DP_LIVE_02012022050459635.xlsx')
+
+
+total_production <- oil_data %>%
+  group_by(LOCATION) %>%
+  summarise(total_value = sum(Value, na.rm = TRUE))
+
+
+threshold <- median(total_production$total_value, na.rm = TRUE)
+
+
+oil_data <- oil_data %>%
+  left_join(total_production, by = "LOCATION") %>%
+  mutate(CATEGORY = ifelse(total_value > threshold, "High Production", "Low Production"))
+
+mean_production <- oil_data %>%
+  group_by(CATEGORY) %>%
+  summarise(mean_value = mean(Value, na.rm = TRUE))
+
+
+ggplot(mean_production, aes(x = CATEGORY, y = mean_value, fill = CATEGORY)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Mean Oil Production by Category",
+       x = "Category",
+       y = "Mean Oil Production (KTOE)") +
+  theme_minimal()
